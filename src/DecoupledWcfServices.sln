@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecoupledWcfServices", "DecoupledWcfServices\DecoupledWcfServices.csproj", "{0F8F7908-8891-45FF-B1CD-2972B208B6B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecoupledWcfServices.Tests", "DecoupledWcfServices.Tests\DecoupledWcfServices.Tests.csproj", "{110FDB05-C2CB-4C10-A805-0A3DD39EE385}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecoupledWcfServices.Client", "DecoupledWcfServices.Client\DecoupledWcfServices.Client.csproj", "{02914DA4-20EA-4269-80BD-D88243A33855}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{0F8F7908-8891-45FF-B1CD-2972B208B6B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F8F7908-8891-45FF-B1CD-2972B208B6B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F8F7908-8891-45FF-B1CD-2972B208B6B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{110FDB05-C2CB-4C10-A805-0A3DD39EE385}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{110FDB05-C2CB-4C10-A805-0A3DD39EE385}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{110FDB05-C2CB-4C10-A805-0A3DD39EE385}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{110FDB05-C2CB-4C10-A805-0A3DD39EE385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02914DA4-20EA-4269-80BD-D88243A33855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02914DA4-20EA-4269-80BD-D88243A33855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02914DA4-20EA-4269-80BD-D88243A33855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02914DA4-20EA-4269-80BD-D88243A33855}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
