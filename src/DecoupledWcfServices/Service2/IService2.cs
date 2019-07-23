@@ -9,7 +9,7 @@ namespace DecoupledWcfServices
     public interface IService2
     {
         [OperationContract]
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json)]
-        Task<string> GetData();
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json)]
+        Task<string> GetData(string data);
     }
 }

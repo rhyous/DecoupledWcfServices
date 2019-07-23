@@ -6,9 +6,9 @@ namespace DecoupledWcfServices
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class Service2 : IService2
     {
-        public Task<string> GetData()
+        public Task<string> GetData(string data)
         {
-            return Task.FromResult("Service 2 data");
+            return Task.FromResult($"Service 2 data: {data}");
         }
     }
 }

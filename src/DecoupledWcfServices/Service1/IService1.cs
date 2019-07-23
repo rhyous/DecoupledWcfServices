@@ -11,5 +11,8 @@ namespace DecoupledWcfServices
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json)]
         Task<string> GetData();
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json)]
+        Task<string> GetRelatedData();
     }
 }

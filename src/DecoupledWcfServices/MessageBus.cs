@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.ServiceModel;
-using System.Web;
+using System.ServiceModel.Description;
+using System.ServiceModel.Web;
 
 namespace DecoupledWcfServices
 {
@@ -19,15 +18,24 @@ namespace DecoupledWcfServices
             // How do I call the web service here?
             try
             {
-                var netPipeUrl = "net.pipe://localhost/Service1/Service1.svc";
-                var method = "GetData";
+                //var netPipeUrl = $"net.pipe://localhost/{service}/{service}.svc";
+                var netPipeUrl = $"http://localhost:54412/{service}/{service}.svc";
                 var serviceContractType = typeof(IService2);
-                var genericChannelFactoryType = typeof(ChannelFactory<>).MakeGenericType(serviceContractType);
-                var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
-                dynamic channelFactory = Activator.CreateInstance(genericChannelFactoryType);
-                var proxy = channelFactory.CreateChannel();
-                var data = proxy.GetData().Result;
-                return data; // Serialized JSON
+                var genericChannelFactoryType = typeof(WebChannelFactory<>).MakeGenericType(serviceContractType);
+                //var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
+                var binding = new WebHttpBinding();
+
+                // How do we make the call with the Uri?
+
+                // Making the call directoy without the Uri
+                var channelFactory = Activator.CreateInstance(genericChannelFactoryType, binding, new Uri(netPipeUrl)) as WebChannelFactory<IService2>;
+                var proxy = channelFactory.CreateChannel() as IService2;
+                using (new OperationContextScope((IContextChannel)proxy))
+                {
+                    var task = proxy.GetData("some data");
+                    task.Wait();
+                    return task.Result; // Serialized JSON
+                }
             }
             catch (Exception)
             {

@@ -15,6 +15,11 @@ namespace DecoupledWcfServices
     {
         public async Task<string> GetData()
         {
+            return "This is from local data.";
+        }
+
+        public async Task<string> GetRelatedData()
+        {
             var url = "http://localhost:54412/Service2/Service2.svc/GetData";
 
             // Using HttpClient - What I have working
