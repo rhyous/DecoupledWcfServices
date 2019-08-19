@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.ServiceModel;
-using System.ServiceModel.Description;
-using System.ServiceModel.Web;
+using System.ServiceModel.Channels;
 
 namespace DecoupledWcfServices
 {
+
     /// <summary>
     /// Service 1 and Service 2 are in the same namespace in this project
     /// </summary>
@@ -19,19 +19,22 @@ namespace DecoupledWcfServices
             try
             {
                 //var netPipeUrl = $"net.pipe://localhost/{service}/{service}.svc";
-                var netPipeUrl = $"http://localhost:54412/{service}/{service}.svc";
+                var netPipeUrl = $"http://localhost:54412/{service}/{service}.svc?y=1";
                 var serviceContractType = typeof(IService2);
-                var genericChannelFactoryType = typeof(WebChannelFactory<>).MakeGenericType(serviceContractType);
+                var genericChannelFactoryType = typeof(CustomWebChannelFactory<>).MakeGenericType(serviceContractType);
                 //var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
                 var binding = new WebHttpBinding();
 
                 // How do we make the call with the Uri?
 
                 // Making the call directoy without the Uri
-                var channelFactory = Activator.CreateInstance(genericChannelFactoryType, binding, new Uri(netPipeUrl)) as WebChannelFactory<IService2>;
+                var channelFactory = Activator.CreateInstance(genericChannelFactoryType, binding, new Uri(netPipeUrl)) as CustomWebChannelFactory<IService2>;
                 var proxy = channelFactory.CreateChannel() as IService2;
                 using (new OperationContextScope((IContextChannel)proxy))
                 {
+                    var httpHeaders = new HttpRequestMessageProperty();
+                    httpHeaders.Headers["D"] = "E";
+                    OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name] = httpHeaders;
                     var task = proxy.GetData("some data");
                     task.Wait();
                     return task.Result; // Serialized JSON

@@ -44,6 +44,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Channels" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -71,6 +72,7 @@
     <Compile Include="Behavior\SampleBehavior.cs" />
     <Compile Include="Behavior\SampleBehaviorExtensionElement.cs" />
     <Compile Include="Behavior\SampleMessageInspector.cs" />
+    <Compile Include="CustomWebChannelFactory.cs" />
     <Compile Include="ServiceHost\RestWebServiceHost.cs" />
     <Compile Include="ServiceHost\RestWebServiceHostFactory.cs" />
     <Compile Include="Service2\IService2.cs" />

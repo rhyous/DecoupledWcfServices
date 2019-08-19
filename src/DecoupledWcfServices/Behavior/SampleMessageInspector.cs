@@ -1,6 +1,8 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using System.ServiceModel.Web;
 
 namespace DecoupledWcfServices.Behavior
 {
@@ -10,6 +12,8 @@ namespace DecoupledWcfServices.Behavior
         public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
 
         {
+            var urlParams = request.Headers?.To.Query;
+            var headers = WebOperationContext.Current?.IncomingRequest?.Headers;
             i++; // Put a breakpoint here to verify this was called.
             return null; 
         }
