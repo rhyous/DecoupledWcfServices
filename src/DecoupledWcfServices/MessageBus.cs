@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 
 namespace DecoupledWcfServices
 {
@@ -11,34 +13,34 @@ namespace DecoupledWcfServices
     /// </summary>
     public class MessageBus
     {
-        public string CallOtherWcfService(string url, object content, NameValueCollection headers)
+        public async Task<string> CallOtherWcfService(string url, object content, NameValueCollection headers)
         {
-            var service = GetServiceName(url);
-
             // How do I call the web service here?
             try
             {
-                //var netPipeUrl = $"net.pipe://localhost/{service}/{service}.svc";
-                var netPipeUrl = $"http://localhost:54412/{service}/{service}.svc?y=1";
                 var serviceContractType = typeof(IService2);
                 var genericChannelFactoryType = typeof(CustomWebChannelFactory<>).MakeGenericType(serviceContractType);
                 //var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
                 var binding = new WebHttpBinding();
 
                 // How do we make the call with the Uri?
+                var serviceUri = GetServiceUri(url);
 
                 // Making the call directoy without the Uri
-                var channelFactory = Activator.CreateInstance(genericChannelFactoryType, binding, new Uri(netPipeUrl)) as CustomWebChannelFactory<IService2>;
-                var proxy = channelFactory.CreateChannel() as IService2;
+                var channelFactory = Activator.CreateInstance(genericChannelFactoryType, binding, serviceUri) as CustomWebChannelFactory<IService2>;
+                var method = channelFactory.GetType().GetMethods().FirstOrDefault(m => m.Name == "CreateChannel" && m.GetParameters().Length == 0);
+                var proxy = method.Invoke(channelFactory, null);
+                Task task = null;
                 using (new OperationContextScope((IContextChannel)proxy))
                 {
                     var httpHeaders = new HttpRequestMessageProperty();
                     httpHeaders.Headers["D"] = "E";
                     OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name] = httpHeaders;
-                    var task = proxy.GetData("some data");
-                    task.Wait();
-                    return task.Result; // Serialized JSON
+                    var proxyMethod = proxy.GetType().GetMethod("GetData");
+                    task = proxyMethod.Invoke(proxy, new[] { "some data" }) as Task;
                 }
+                await task;
+                return task.GetType().GetProperty("Result").GetValue(task) as string;
             }
             catch (Exception)
             {
@@ -46,13 +48,10 @@ namespace DecoupledWcfServices
             }
         }
 
-        internal string GetServiceName(string url)
+        internal Uri GetServiceUri(string url)
         {
-            var index = url.IndexOf(".svc");
-            var sub = url.Substring(0, index);
-            index = sub.LastIndexOf("/") + 1;
-            var sub2 = url.Substring(index, sub.Length - index);
-            return sub2;
+            var index = url.IndexOf(".svc") + 4;
+            return new Uri(url.Substring(0, index));
         }
     }
 }

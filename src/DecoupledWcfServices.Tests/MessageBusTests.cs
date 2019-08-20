@@ -7,17 +7,17 @@ namespace DecoupledWcfServices.Tests
     public class MessageBusTests
     {
         [TestMethod]
-        public void MessageBus_GetServiceName_Test()
+        public void MessageBus_GetServiceUri_Test()
         {
             // Arrange
             var bus = new MessageBus();
             var url = "http://localhost:54412/Service2/Service2.svc/GetData";
 
             // Act
-            var actual = bus.GetServiceName(url);
+            var actual = bus.GetServiceUri(url);
 
             // Assert
-            Assert.AreEqual("Service2", actual);
+            Assert.AreEqual("http://localhost:54412/Service2/Service2.svc", actual.AbsoluteUri);
         }
     }
 }

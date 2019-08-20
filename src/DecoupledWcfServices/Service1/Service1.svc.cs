@@ -20,7 +20,7 @@ namespace DecoupledWcfServices
 
         public async Task<string> GetRelatedData()
         {
-            var url = "http://localhost:54412/Service2/Service2.svc/GetData";
+            var url = "http://localhost:54412/Service2/Service2.svc/GetData?y=1";
 
             // Using HttpClient - What I have working
 
@@ -31,7 +31,7 @@ namespace DecoupledWcfServices
             //return await httpResponseMessage.Content.ReadAsStringAsync();
 
             // Using Bus - What I want to get working
-            return new MessageBus().CallOtherWcfService(url, null, null);
+            return await new MessageBus().CallOtherWcfService(url, null, null);
         }
 
     }
